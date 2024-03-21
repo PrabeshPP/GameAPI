@@ -29,6 +29,12 @@ app.MapPost("/games",(CreateGameDTos newGame)=>{
 app.MapPut("/games/{id}",(int id, UpdateGameD updateGame)=>{
     int index  = games.FindIndex(game=> game.Id ==id);
     games[index] = new GameDTos(id,updateGame.Name,updateGame.Genre,updateGame.Price,updateGame.ReleaseDate);
+    return Results.NoContent();
+});
+
+app.MapDelete("/games/{id}",(int id)=>{
+    games.RemoveAll(game=>game.Id == id);
+    return Results.NoContent();
 });
 
 app.Run();
