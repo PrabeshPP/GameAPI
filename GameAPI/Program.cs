@@ -3,19 +3,19 @@ using GameAPI;
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-const string GetGameEndPointName = "GetGame";
-
-List<GameDTos> games = [
-    new (1,"FIFA","Sports",79.99M, new DateOnly(2022,9,27)),
-    new (2,"COD","Action",58.99M, new DateOnly(2022,9,27)),
-    new (3,"GTA V","Action",100.99M, new DateOnly(2022,9,27)),
-];
 
 
 //GET //games
 app.MapGet("/", () => "Hello World!");
 
-app.MapGet("/games/{id}",(int id)=>games.Find(game=>game.Id == id)).WithName(GetGameEndPointName);
+app.MapGet("/games/{id}",(int id)=>{
+    GameDTos? gameDTos = games.Find(game=>game.Id == id);
+    if(gameDTos == null){
+        return Results.NotFound();
+    }else{
+        return Results.Ok(gameDTos);
+    }
+}).WithName(GetGameEndPointName);
 
 //POST /games
 app.MapPost("/games",(CreateGameDTos newGame)=>{
